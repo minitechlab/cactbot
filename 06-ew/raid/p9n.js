@@ -242,7 +242,6 @@ Options.Triggers.push({
     },
     {
       'locale': 'fr',
-      'missingTranslations': true,
       'replaceSync': {
         'Comet': 'Comète',
         'Fire Sphere': 'Sphère de feu',
@@ -283,7 +282,6 @@ Options.Triggers.push({
     },
     {
       'locale': 'ja',
-      'missingTranslations': true,
       'replaceSync': {
         'Comet': 'コメット',
         'Fire Sphere': 'ファイアスフィア',

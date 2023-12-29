@@ -358,7 +358,6 @@ Options.Triggers.push({
     },
     {
       'locale': 'fr',
-      'missingTranslations': true,
       'replaceSync': {
         'Gorgon': 'gorgone',
         '(?<!Illusory )Hephaistos': 'Héphaïstos',
@@ -391,7 +390,6 @@ Options.Triggers.push({
     },
     {
       'locale': 'ja',
-      'missingTranslations': true,
       'replaceSync': {
         'Gorgon': 'ゴルゴン',
         '(?<!Illusory )Hephaistos': 'ヘファイストス',

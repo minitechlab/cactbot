@@ -450,7 +450,6 @@ Options.Triggers.push({
     },
     {
       'locale': 'fr',
-      'missingTranslations': true,
       'replaceSync': {
         'Aetheric Charge': 'globe magique',
         'Damcyan Antlion': 'fourmilion de Damcyan',
@@ -493,7 +492,6 @@ Options.Triggers.push({
     },
     {
       'locale': 'ja',
-      'missingTranslations': true,
       'replaceSync': {
         'Aetheric Charge': '魔力球',
         'Damcyan Antlion': 'ダムシアン・アントリオン',

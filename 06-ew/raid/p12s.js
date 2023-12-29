@@ -4255,7 +4255,6 @@ Options.Triggers.push({
     },
     {
       'locale': 'fr',
-      'missingTranslations': true,
       'replaceSync': {
         '(?<! )Athena': 'Athéna',
         'Anthropos': 'anthropos',

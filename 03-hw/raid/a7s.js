@@ -287,7 +287,6 @@ Options.Triggers.push({
     },
     {
       'locale': 'ja',
-      'missingTranslations': true,
       'replaceSync': {
         'Bomb': '爆弾',
         'Boomtype Magitek Gobwalker G-VII': 'VII号ゴブリウォーカーL型',

@@ -239,7 +239,6 @@ Options.Triggers.push({
     },
     {
       'locale': 'fr',
-      'missingTranslations': true,
       'replaceSync': {
         'Comet': 'comète',
         'Zeromus': 'Zeromus',

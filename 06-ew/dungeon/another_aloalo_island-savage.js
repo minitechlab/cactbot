@@ -1695,7 +1695,6 @@ Options.Triggers.push({
     },
     {
       'locale': 'ja',
-      'missingTranslations': true,
       'replaceSync': {
         'Aloalo Golem': 'アロアロ・ウッドゴーレム',
         'Aloalo Islekeeper': 'アロアロ・キーパー',

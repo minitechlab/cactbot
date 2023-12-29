@@ -1928,7 +1928,6 @@ Options.Triggers.push({
     },
     {
       'locale': 'fr',
-      'missingTranslations': true,
       'replaceSync': {
         'Bahamut Prime': 'Primo-Bahamut',
         'Blazing path, lead me to iron rule':
@@ -2035,7 +2034,6 @@ Options.Triggers.push({
     },
     {
       'locale': 'ja',
-      'missingTranslations': true,
       'replaceSync': {
         'Bahamut Prime': 'バハムート・プライム',
         'Fang of Light': 'ライトファング',

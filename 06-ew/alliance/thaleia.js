@@ -818,7 +818,6 @@ Options.Triggers.push({
     },
     {
       'locale': 'fr',
-      'missingTranslations': true,
       'replaceSync': {
         'Eulogia': 'Eulogie',
         'Llymlaen(?!\')': 'Llymlaen',
@@ -920,7 +919,6 @@ Options.Triggers.push({
     },
     {
       'locale': 'ja',
-      'missingTranslations': true,
       'replaceSync': {
         'Eulogia': 'エウロギア',
         'Llymlaen(?!\')': 'リムレーン',
