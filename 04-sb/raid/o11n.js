@@ -198,7 +198,7 @@ Options.Triggers.push({
         'Engaging Delta Attack protocol': 'Nécessité d\'utiliser l\'attaque Delta',
         'Level Checker': 'vérifiniveau',
         'Omega': 'Oméga',
-        'Program failure detected': 'Échec de la boucle de programme Alpha...',
+        'Program failure detected': 'Arrêt de la boucle de programme Alpha...',
         'Rocket Punch': 'Astéropoing',
       },
       'replaceText': {

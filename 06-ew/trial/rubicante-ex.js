@@ -128,6 +128,7 @@ Options.Triggers.push({
         text: {
           en: '${dir} (max melee)',
           de: '${dir} (max Nahkämpfer-Entfernung)',
+          fr: '${dir} (max melee)',
         },
         north: Outputs.north,
         south: Outputs.south,
@@ -187,6 +188,7 @@ Options.Triggers.push({
         text: {
           en: '${dir} (max melee)',
           de: '${dir} (max Nahkämpfer-Entfernung)',
+          fr: '${dir} (max melee)',
         },
         dirNNE: Outputs.dirNNE,
         dirENE: Outputs.dirENE,
@@ -432,10 +434,12 @@ Options.Triggers.push({
         outCardinal: {
           en: 'Out + Cardinal',
           de: 'Raus + Kardinal',
+          fr: 'Extérieur + Cardinal',
         },
         outIntercard: {
           en: 'Out + Intercard',
           de: 'Raus + Interkardinal',
+          fr: 'Extérieur + Intercardinal',
         },
       },
     },
