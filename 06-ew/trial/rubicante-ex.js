@@ -725,6 +725,7 @@ Options.Triggers.push({
         text: {
           en: '${safe} => ${mech}',
           de: '${safe} => ${mech}',
+          fr: '${safe} => ${mech}',
         },
         cardinals: {
           en: 'Cardinal',
@@ -761,10 +762,12 @@ Options.Triggers.push({
         supportStack: {
           en: '(supports stack)',
           de: '(Supporter sammeln)',
+          fr: '(package support)',
         },
         dpsStack: {
           en: '(dps stack)',
           de: '(DPS sammeln)',
+          fr: '(Package DPS)',
         },
       },
     },
