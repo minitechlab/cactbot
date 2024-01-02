@@ -382,6 +382,7 @@ Options.Triggers.push({
         combo: {
           en: '${dir1} => ${dir2}',
           de: '${dir1} => ${dir2}',
+          fr: '${dir1} => ${dir2}',
           cn: '${dir1} => ${dir2}',
           ko: '${dir1} => ${dir2}',
         },
@@ -415,6 +416,7 @@ Options.Triggers.push({
         combo: {
           en: '${dir1} => ${dir2}',
           de: '${dir1} => ${dir2}',
+          fr: '${dir1} => ${dir2}',
           cn: '${dir1} => ${dir2}',
           ko: '${dir1} => ${dir2}',
         },

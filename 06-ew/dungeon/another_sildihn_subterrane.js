@@ -2404,7 +2404,6 @@ Options.Triggers.push({
     },
     {
       'locale': 'fr',
-      'missingTranslations': true,
       'replaceSync': {
         'Aqueduct Belladonna': 'belladone des aqueducs',
         'Aqueduct Dryad': 'dryade des aqueducs',
