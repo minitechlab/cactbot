@@ -853,7 +853,6 @@ Options.Triggers.push({
     },
     {
       'locale': 'fr',
-      'missingTranslations': true,
       'replaceSync': {
         'Ancient Katana': 'katana ancien',
         'Ashigaru Kyuhei': 'ashigaru kyûhei',
@@ -941,8 +940,10 @@ Options.Triggers.push({
         'Rush': 'Ruée',
         'Scarlet Auspice': 'Auspice écarlate',
         'Seal of Riotous Bloom': 'Sceau de floraison vivace',
-        'Seal of the Fleeting': 'Sceau de floraison',
+        'Seal of the Blossom': 'Sceau de floraison',
+        'Seal of the Fleeting': 'Sceau des quatre saisons',
         'Seasons of the Fleeting': 'Quatre saisons',
+        'Season of Element': 'Saison de l\'élément',
         'Self-destruct': 'Auto-destruction',
         'Shadowflight': 'Vol ombrageux',
         '(?<! )Shock': 'Décharge électrostatique',

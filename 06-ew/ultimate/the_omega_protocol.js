@@ -182,6 +182,7 @@ Options.Triggers.push({
         text: {
           en: 'Tank Autos',
           de: 'Tank Autos',
+          fr: 'Autos sur le tank',
           ja: 'タンクへのオートアタック',
           cn: '坦克平A',
           ko: '탱커 평타',
@@ -359,6 +360,7 @@ Options.Triggers.push({
           numNoMechanic: {
             en: '1',
             de: '1',
+            fr: '1',
             ja: '1',
             cn: '1',
             ko: '1',
@@ -440,6 +442,7 @@ Options.Triggers.push({
           lineStack: {
             en: '1',
             de: '1',
+            fr: '1',
             ja: '1',
             cn: '1',
             ko: '1',
