@@ -10,6 +10,7 @@ import {
   TriggerOutput,
   TriggerSetAutoConfig,
 } from '../../types/trigger';
+import { TTSEngineTypes } from '../../types/tts_engine';
 
 // This file defines the base options that raidboss expects to see.
 
@@ -97,6 +98,10 @@ const defaultRaidbossNonConfigOptions: RaidbossNonConfigOptions = {
 // These values are overwritten and are just here for typing.
 const defaultRaidbossConfigOptions = {
   DefaultAlertOutput: 'textAndSound',
+  TTSEngine: 'act' as TTSEngineTypes,
+  WebSocketTTSServerHost: '127.0.0.1',
+  WebSocketTTSServerPort: 10502,
+  WebSocketTTSReconnectSeconds: 30,
   AlertsLanguage: undefined as (Lang | undefined),
   TimelineLanguage: undefined as (Lang | undefined),
   TimelineEnabled: true,

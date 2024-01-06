@@ -35,12 +35,14 @@ import {
   TriggerOutput,
   TriggerSetAutoConfig,
 } from '../../types/trigger';
+import { TTSEngine } from '../../types/tts_engine';
 
 import AutoplayHelper from './autoplay_helper';
 import BrowserTTSEngine from './browser_tts_engine';
 import { PerTriggerAutoConfig, PerTriggerOption, RaidbossOptions } from './raidboss_options';
 import { TimelineLoader } from './timeline';
 import { TimelineReplacement } from './timeline_parser';
+import WebSocketTTSEngine from './web_socket_tts_engine';
 
 const isRaidbossLooseTimelineTrigger = (
   trigger: ProcessedTrigger,
@@ -567,7 +569,7 @@ export class PopupText {
   protected alarmText: HTMLElement | null;
   protected parserLang: Lang;
   protected displayLang: Lang;
-  protected ttsEngine?: BrowserTTSEngine;
+  protected ttsEngine?: TTSEngine;
   protected ttsSay: (text: string) => void;
   protected partyTracker: PartyTracker;
   protected readonly kMaxRowsOfText = 2;
@@ -603,8 +605,17 @@ export class PopupText {
     this.displayLang = this.options.AlertsLanguage ?? this.options.DisplayLanguage ??
       this.options.ParserLanguage ?? 'en';
 
-    if (this.options.IsRemoteRaidboss) {
+    if (this.options.IsRemoteRaidboss || this.options.TTSEngine === 'browser') {
       this.ttsEngine = new BrowserTTSEngine(this.displayLang);
+    } else if (this.options.TTSEngine === 'webSocket') {
+      this.ttsEngine = new WebSocketTTSEngine(
+        this.options.WebSocketTTSServerHost,
+        this.options.WebSocketTTSServerPort,
+        this.options.WebSocketTTSReconnectSeconds,
+      );
+    }
+
+    if (this.ttsEngine !== undefined) {
       this.ttsSay = (text) => {
         this.ttsEngine?.play(this.options.TransformTts(text));
       };
