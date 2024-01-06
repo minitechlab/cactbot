@@ -1954,6 +1954,140 @@ const templateOptions: OptionsTemplate = {
     },
     defaultAlertOutput,
     {
+      id: 'TTSEngine',
+      name: {
+        en: 'TTS engine',
+        de: 'TTS engine',
+        fr: 'TTS engine',
+        ja: 'TTS engine',
+        cn: 'TTS engine',
+        ko: 'TTS engine',
+      },
+      comment: {
+        en: `<dl/>
+                <dt>ACT</dt>
+                <dd>Use native ACT TTS</dd>
+                <dt>Browser</dt>
+                <dd>Use browser speech synthesis</dd>
+                <dt>WebSocket TTS</dt>
+                <dd>Use a custom WebSocket TTS server to receive the cactbotSay event</dd>
+             </ul>`,
+        de: `<dl/>
+                <dt>ACT</dt>
+                <dd>Use native ACT TTS</dd>
+                <dt>Browser</dt>
+                <dd>Use browser speech synthesis</dd>
+                <dt>WebSocket TTS</dt>
+                <dd>Use a custom WebSocket TTS server to receive the cactbotSay event</dd>
+             </ul>`,
+        fr: `<dl/>
+                <dt>ACT</dt>
+                <dd>Use native ACT TTS</dd>
+                <dt>Browser</dt>
+                <dd>Use browser speech synthesis</dd>
+                <dt>WebSocket TTS</dt>
+                <dd>Use a custom WebSocket TTS server to receive the cactbotSay event</dd>
+             </ul>`,
+        ja: `<dl/>
+                <dt>ACT</dt>
+                <dd>Use native ACT TTS</dd>
+                <dt>Browser</dt>
+                <dd>Use browser speech synthesis</dd>
+                <dt>WebSocket TTS</dt>
+                <dd>Use a custom WebSocket TTS server to receive the cactbotSay event</dd>
+             </ul>`,
+        cn: `<dl/>
+                <dt>ACT</dt>
+                <dd>Use native ACT TTS</dd>
+                <dt>Browser</dt>
+                <dd>Use browser speech synthesis</dd>
+                <dt>WebSocket TTS</dt>
+                <dd>Use a custom WebSocket TTS server to receive the cactbotSay event</dd>
+             </ul>`,
+        ko: `<dl/>
+                <dt>ACT</dt>
+                <dd>Use native ACT TTS</dd>
+                <dt>Browser</dt>
+                <dd>Use browser speech synthesis</dd>
+                <dt>WebSocket TTS</dt>
+                <dd>Use a custom WebSocket TTS server to receive the cactbotSay event</dd>
+             </ul>`,
+      },
+      type: 'select',
+      options: {
+        en: {
+          'ACT': 'act',
+          'Browser': 'browser',
+          'WebSocket TTS': 'webSocket',
+        },
+        de: {
+          'ACT': 'act',
+          'Browser': 'browser',
+          'WebSocket TTS': 'webSocket',
+        },
+        fr: {
+          'ACT': 'act',
+          'Browser': 'browser',
+          'WebSocket TTS': 'webSocket',
+        },
+        ja: {
+          'ACT': 'act',
+          'Browser': 'browser',
+          'WebSocket TTS': 'webSocket',
+        },
+        cn: {
+          'ACT': 'act',
+          'Browser': 'browser',
+          'WebSocket TTS': 'webSocket',
+        },
+        ko: {
+          'ACT': 'act',
+          'Browser': 'browser',
+          'WebSocket TTS': 'webSocket',
+        },
+      },
+      default: 'act',
+    },
+    {
+      id: 'WebSocketTTSServerHost',
+      name: {
+        en: 'WebSocket TTS host',
+        de: 'WebSocket TTS host',
+        fr: 'WebSocket TTS host',
+        ja: 'WebSocket TTS host',
+        cn: 'WebSocket TTS host',
+        ko: 'WebSocket TTS host',
+      },
+      type: 'string',
+      default: '127.0.0.1',
+    },
+    {
+      id: 'WebSocketTTSServerPort',
+      name: {
+        en: 'WebSocket TTS port',
+        de: 'WebSocket TTS port',
+        fr: 'WebSocket TTS port',
+        ja: 'WebSocket TTS port',
+        cn: 'WebSocket TTS port',
+        ko: 'WebSocket TTS port',
+      },
+      type: 'integer',
+      default: 10502,
+    },
+    {
+      id: 'WebSocketTTSReconnectSeconds',
+      name: {
+        en: 'WebSocket TTS reconnect (seconds)',
+        de: 'WebSocket TTS reconnect (seconds)',
+        fr: 'WebSocket TTS reconnect (seconds)',
+        ja: 'WebSocket TTS reconnect (seconds)',
+        cn: 'WebSocket TTS reconnect (seconds)',
+        ko: 'WebSocket TTS reconnect (seconds)',
+      },
+      type: 'integer',
+      default: 30,
+    },
+    {
       id: 'AlertsLanguage',
       name: {
         en: 'Alerts language',
