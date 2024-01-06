@@ -1,4 +1,5 @@
 import { Lang } from '../../resources/languages';
+import { TTSEngine } from '../../types/tts_engine';
 
 class TTSItem {
   readonly text: string;
@@ -22,7 +23,7 @@ type TTSItemDictionary = {
   [key: string]: TTSItem;
 };
 
-export default class BrowserTTSEngine {
+export default class BrowserTTSEngine implements TTSEngine {
   readonly ttsItems: TTSItemDictionary = {};
   private speechLang?: string;
   private speechVoice?: SpeechSynthesisVoice;
