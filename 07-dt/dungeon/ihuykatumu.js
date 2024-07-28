@@ -19,7 +19,10 @@ Options.Triggers.push({
         text: {
           en: 'Get under Flytrap',
           de: 'Geh unter die Fliegenfalle',
+          fr: 'Allez sous le piège à vent',
+          ja: 'ドーナツ範囲に入る',
           cn: '进入月环',
+          ko: '파리풀 아래로',
         },
       },
     },
@@ -33,7 +36,10 @@ Options.Triggers.push({
         text: {
           en: 'Stay out of inhale',
           de: 'Steh auserhalb des Soges',
+          fr: 'Sortez du Turbinage',
+          ja: '吸い込む範囲から離れる',
           cn: '躲开 Boss 吸气 + 全场 AoE',
+          ko: '흡입 범위에서 벗어나 있기',
         },
       },
     },
@@ -62,7 +68,10 @@ Options.Triggers.push({
         text: {
           en: 'Dodge Ivy cleaves (small)',
           de: 'Efeu-Cleave ausweichen (klein)',
+          fr: 'Esquivez les cleaves du lierre (petit)',
+          ja: '植物の直線範囲攻撃を避ける (小)',
           cn: '注意触手直线AoE (小)',
+          ko: '식물의 직선 공격 피하기 (작음)',
         },
       },
     },
@@ -77,7 +86,10 @@ Options.Triggers.push({
         text: {
           en: 'Dodge Ivy cleaves (big)',
           de: 'Efeu-Cleave ausweichen (groß)',
+          fr: 'Esquivez les cleaves du lierre (large)',
+          ja: '植物の直線範囲攻撃を避ける (大)',
           cn: '注意触手直线AoE (大)',
+          ko: '식물의 직선 공격 피하기 (큼)',
         },
       },
     },
@@ -116,7 +128,10 @@ Options.Triggers.push({
         text: {
           en: 'Away on 3rd jump',
           de: 'Weg vom 3. Sprung',
+          fr: 'Loin du 3ème saut',
+          ja: '3回目のジャンプ目標地点から離れる',
           cn: '远离第三次跳跃落点',
+          ko: '3번째 점프 지점에서 멀어지기',
         },
       },
     },
@@ -130,7 +145,10 @@ Options.Triggers.push({
         text: {
           en: 'Away on 3rd jump',
           de: 'Weg vom 3. Sprung',
+          fr: 'Loin du 3ème saut',
+          ja: '3回目のジャンプ目標地点から離れる',
           cn: '远离第三次跳跃落点',
+          ko: '3번째 점프 지점에서 멀어지기',
         },
       },
     },
@@ -151,7 +169,10 @@ Options.Triggers.push({
         text: {
           en: 'In, then follow jump',
           de: 'Rein, dann Sprüngen folgen',
+          fr: 'Intérieur, puis suivez le saut',
+          ja: 'ドーナツ、そしてボスを追いかける',
           cn: '进入月环 => 去BOSS身后',
+          ko: '안으로, 그리고 보스 따라가기',
         },
       },
     },
@@ -165,7 +186,10 @@ Options.Triggers.push({
         text: {
           en: 'Avoid Whirlwind star lines',
           de: 'Wirbelwind-Sternenlinien vermeiden',
+          fr: 'Évitez les lignes des étoiles de vent',
+          ja: '風の8方向直線攻撃から避ける',
           cn: '注意风圈星形的直线AoE',
+          ko: '회오리의 8방향 장판 피하기',
         },
       },
     },
@@ -179,6 +203,10 @@ Options.Triggers.push({
         text: {
           en: 'Avoid Whirlwind star lines',
           de: 'Wirbelwind-Sternenlinien vermeiden',
+          fr: 'Évitez les lignes des étoiles de vent',
+          ja: '風の8方向直線攻撃から避ける',
+          cn: '注意风圈星形的直线AoE',
+          ko: '회오리의 8방향 장판 피하기',
         },
       },
     },
@@ -192,6 +220,10 @@ Options.Triggers.push({
         text: {
           en: 'Avoid Whirlwind star lines',
           de: 'Wirbelwind-Sternenlinien vermeiden',
+          fr: 'Évitez les lignes des étoiles de vent',
+          ja: '風の8方向直線攻撃から避ける',
+          cn: '注意风圈星形的直线AoE',
+          ko: '회오리의 8방향 장판 피하기',
         },
       },
     },
@@ -247,7 +279,6 @@ Options.Triggers.push({
     },
     {
       'locale': 'fr',
-      'missingTranslations': true,
       'replaceSync': {
         'Apollyon': 'apollyon',
         'Drowsie': 'Somnolent',
@@ -259,6 +290,12 @@ Options.Triggers.push({
         '(?<! )Punutiy': 'punutiy',
       },
       'replaceText': {
+        '\\(cast\\)': '(Incantation)',
+        '\\(inner ring\\)': '(Anneau intérieur)',
+        '\\(large\\)': '(Large)',
+        '\\(outer ring\\)': '(Anneau extérieur)',
+        '\\(puddle\\)': '(Flaque)',
+        '\\(small\\)': '(Petit)',
         'Arise': 'Apparition',
         'Blade(?!s )': 'Ravisseuse',
         'Blades of Famine': 'Lames locustes',
@@ -290,7 +327,6 @@ Options.Triggers.push({
     },
     {
       'locale': 'ja',
-      'missingTranslations': true,
       'replaceSync': {
         'Apollyon': 'アポリオン',
         'Drowsie': 'ドラウジー',

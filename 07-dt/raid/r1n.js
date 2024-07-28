@@ -187,21 +187,24 @@ Options.Triggers.push({
       infoText: (_data, matches, output) => {
         const heading = parseFloat(matches.heading);
         const dir = Directions.hdgTo8DirNum(heading);
-        if (dir % 2 === 0) {
+        if (dir % 2 === 0)
           // `dir % 2 === 0` = this is aimed at a cardinal, so intercards safe first
-          return output.cardsIntercards();
-        }
-        return output.intercardsCards();
+          return output.intercardsCards();
+        return output.cardsIntercards();
       },
       outputStrings: {
         cardsIntercards: {
           en: 'Cards => Intercards',
           de: 'Karten => Interkardinal',
+          fr: 'Cardinal => Intercardinal',
+          ja: '十字 => 斜め',
           cn: '斜角 => 十字',
         },
         intercardsCards: {
           en: 'Intercards => Cards',
           de: 'Interkardinal => Karten',
+          fr: 'Intercardinal => Cardinal',
+          ja: '斜め => 十字',
           cn: '十字 => 斜角',
         },
       },
@@ -216,6 +219,8 @@ Options.Triggers.push({
         text: {
           en: 'Aim for uncracked tile',
           de: 'Ziehle auf nich gerissene Fläche',
+          fr: 'Visez une tuile non-brisée',
+          ja: '割れていない床を狙う',
           cn: '瞄准完好的平台',
         },
       },
@@ -254,7 +259,9 @@ Options.Triggers.push({
         text: {
           en: 'West => East at marker',
           de: 'Westen => Osten bei der Markierung',
-          cn: '西 => 标记东侧',
+          fr: 'Ouest => Est depuis le marqueur',
+          ja: '西 => マーカーの東',
+          cn: '左(西) => 标记右(东)侧',
         },
       },
     },
@@ -268,7 +275,9 @@ Options.Triggers.push({
         text: {
           en: 'East => West at marker',
           de: 'Osten => Westen bei der Markierung',
-          cn: '东 => 标记西侧',
+          fr: 'Est => Ouest depuis le marqueur',
+          ja: '東 => マーカーの西',
+          cn: '右(东) => 标记左(西)侧',
         },
       },
     },
@@ -282,7 +291,9 @@ Options.Triggers.push({
         text: {
           en: 'West => East at marker',
           de: 'Westen => Osten bei der Markierung',
-          cn: '西 => 标记东侧',
+          fr: 'Ouest => Est depuis le marqueur',
+          ja: '西 => マーカーの東',
+          cn: '左(西) => 标记右(东)侧',
         },
       },
     },
@@ -296,7 +307,9 @@ Options.Triggers.push({
         text: {
           en: 'East => West at marker',
           de: 'Osten => Westen bei der Markierung',
-          cn: '东 => 标记西侧',
+          fr: 'Est => Ouest depuis le marqueur',
+          ja: '東 => マーカーの西',
+          cn: '右(东) => 标记左(西)侧',
         },
       },
     },
@@ -339,7 +352,6 @@ Options.Triggers.push({
     },
     {
       'locale': 'fr',
-      'missingTranslations': true,
       'replaceSync': {
         'Black Cat': 'Black Cat',
         'Copy Cat': 'double félin',
@@ -360,11 +372,15 @@ Options.Triggers.push({
         'Overshadow': 'Ombragement',
         'Predaceous Pounce': 'Prédation preste',
         'Shockwave': 'Onde de choc',
+        '\\(cast\\)': '(Incantation)',
+        '\\(damage\\)': '(Dommage)',
+        '\\(hits\\)': '(Coup)',
+        '\\(jump\\)': '(Saut)',
+        '\\(telegraphs\\)': '(Télégraphes)',
       },
     },
     {
       'locale': 'ja',
-      'missingTranslations': true,
       'replaceSync': {
         'Black Cat': 'ブラックキャット',
         'Copy Cat': 'コピーキャット',

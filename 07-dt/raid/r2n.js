@@ -77,12 +77,14 @@ Options.Triggers.push({
       id: 'R2N Heartsick',
       type: 'StartsUsing',
       netRegex: { id: '9B8D', source: 'Honey B. Lovely', capture: false },
+      suppressSeconds: 1,
       infoText: (_data, _matches, output) => output.stacks(),
       outputStrings: {
         stacks: {
           en: 'Stacks',
           de: 'Sammeln',
           fr: 'Package',
+          ja: '集合',
           cn: '分组分摊',
           ko: '쉐어',
         },
@@ -117,7 +119,6 @@ Options.Triggers.push({
     },
     {
       'locale': 'fr',
-      'missingTranslations': true,
       'replaceSync': {
         'Honey B. Lovely': 'Honey B. Lovely',
       },
@@ -143,7 +144,6 @@ Options.Triggers.push({
     },
     {
       'locale': 'ja',
-      'missingTranslations': true,
       'replaceSync': {
         'Honey B. Lovely': 'ハニー・B・ラブリー',
       },

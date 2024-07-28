@@ -492,6 +492,7 @@ Options.Triggers.push({
           de: 'Spheren ausweichen - schwebende Fläche',
           fr: 'Évitez les sphères - tuile surélevée',
           ja: '玉を避ける - 高台',
+          cn: '躲开球 - 浮空格',
           ko: '장판 피하기 - 공중부양 칸',
         },
         combo: {
@@ -1009,7 +1010,6 @@ Options.Triggers.push({
     },
     {
       'locale': 'ja',
-      'missingTranslations': true,
       'replaceSync': {
         'Arcane Sphere': '立体魔法陣',
         'Feather of Ruin': 'ヴァリガルマンダの羽根',
