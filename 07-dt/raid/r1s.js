@@ -66,16 +66,26 @@ Options.Triggers.push({
       netRegex: { location: ['00', '03'], flags: mapEffectTileState.quickRebuid, capture: true },
       infoText: (_data, matches, output) => {
         if (matches.location === '00')
-          return output.nwSE();
-        return output.neSW();
+          return output.knockback({
+            pos1: output.northwest(),
+            pos2: output.southeast(),
+          });
+        return output.knockback({
+          pos1: output.northeast(),
+          pos2: output.southwest(),
+        });
       },
       outputStrings: {
-        nwSE: {
-          en: 'Knockback (NW/SE Safe)',
+        knockback: {
+          en: 'Knockback (${pos1}/${pos2} Safe)',
+          de: 'Rückstoß (${pos1}/${pos2} sicher)',
+          ja: 'ノックバック (${pos1}/${pos2} が安地)',
+          cn: '击退 (${pos1}/${pos2} 安全)',
         },
-        neSW: {
-          en: 'Knockback (NE/SW Safe)',
-        },
+        northeast: Outputs.dirNE,
+        northwest: Outputs.dirNW,
+        southeast: Outputs.dirSE,
+        southwest: Outputs.dirSW,
       },
     },
     {
@@ -185,6 +195,9 @@ Options.Triggers.push({
       outputStrings: {
         outSpread: {
           en: 'Out + Spread',
+          de: 'Raus + Verteilen',
+          ja: '外へ + 散開',
+          cn: '远离 + 分散',
         },
       },
     },
@@ -330,7 +343,7 @@ Options.Triggers.push({
           de: 'Rollenposition',
           fr: 'Positions par rôle',
           ja: 'ロールの担当位置へ',
-          cn: '去指定位置',
+          cn: '职能分散站位',
           ko: '직업별 산개위치로',
         },
       },
@@ -371,12 +384,21 @@ Options.Triggers.push({
         dirW: Outputs.dirW,
         insideOut: {
           en: 'Inside => Outside',
+          de: 'Rein => Raus',
+          ja: '内側 => 外側',
+          cn: '场内 => 场外',
         },
         outsideIn: {
           en: 'Outside => Inside',
+          de: 'Raus => Rein',
+          ja: '外側 => 内側',
+          cn: '场外 => 场内',
         },
         combo: {
           en: '${dir}, ${cleaves}',
+          de: '${dir}, ${cleaves}',
+          ja: '${dir}, ${cleaves}',
+          cn: '去 ${dir}, ${cleaves}',
         },
         unknown: Outputs.unknown,
       },
@@ -399,6 +421,9 @@ Options.Triggers.push({
       outputStrings: {
         proximity: {
           en: 'Proximity baits at target',
+          de: 'Nah-Distanz-Köder vom Ziel',
+          ja: 'ボスに近づいて誘導',
+          cn: '引导站位',
         },
         unknown: Outputs.unknown,
       },
@@ -480,15 +505,27 @@ Options.Triggers.push({
         dirW: Outputs.dirW,
         in: {
           en: 'In + Healer Stacks => Out',
+          de: 'Rein + Auf Heiler sammeln => Raus',
+          ja: '中へ + ヒラ頭割り => 外へ',
+          cn: '场内 + 治疗组分摊 => 场外',
         },
         out: {
           en: 'Out + Healer Stacks => In',
+          de: 'Raus + Auf Heiler sammeln => Rein',
+          ja: '外へ + ヒラ頭割り => 中へ',
+          cn: '场外 + 治疗组分摊 => 场内',
         },
         healerStacks: {
           en: 'Go ${dir} => ${inOut}',
+          de: 'Geh nach ${dir} => ${inOut}',
+          ja: '${dir} へ => ${inOut}',
+          cn: '去 ${dir} => ${inOut}',
         },
         proximity: {
           en: 'Go ${dir} => Proximity Baits + Spreads',
+          de: 'Geh nach ${dir} => Nah-Distanz-Köder + Verteilen',
+          ja: '${dir} へ => ボスに近づいて誘導 + 散開',
+          cn: '去 ${dir} => 引导站位 + 分散',
         },
       },
     },
