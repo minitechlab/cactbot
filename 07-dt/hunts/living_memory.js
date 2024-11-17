@@ -25,12 +25,87 @@ const climateChangeNpcYellMap = {
 };
 const climateChangeNpcYellIds = Object.keys(climateChangeNpcYellMap);
 const weatherChannelCastIds = ['967C', '967E', '9680', '9682'];
+const CardSafeDirectionCol = [
+  'NW',
+  'N',
+  'NE',
+  'SE',
+  'S',
+  'SW',
+];
+const muCardFirstDrawMap = {
+  '970A': 1,
+  '970B': 2,
+  '970C': 3,
+  '970D': 4,
+  '970E': 5,
+  '970F': 6,
+};
+const muCardDrawMap = {
+  '9710': 1,
+  '9711': 2,
+  '9712': 3,
+  '9713': 4,
+  '9714': 5,
+  '9715': 6,
+};
+const muCardNpcIdMap = {
+  '43EE': 1,
+  '43EF': 2,
+  '43F0': 3,
+  '43F1': 4,
+  '43F2': 5,
+  '43F3': 6,
+};
+const muThreeCardPatternMap = {
+  '970A': ['SE', 'SW', 'N'],
+  '970B': ['N', 'SE', 'SW'],
+  '970C': ['NW', 'NE', 'S'],
+  '970D': ['NE', 'S', 'NW'],
+  '970E': ['SW', 'N', 'SE'],
+  '970F': ['S', 'NW', 'NE'], // ('970F', '9714', '9712') [6, 5, 3]
+};
+//     south
+//  777 791 805
+// -------------
+// | 4 | 5 | 6 | 603
+// -------------
+// | 1 | 2 | 3 | 583
+// -------------
+// (numbers for 2 card pattern)
+const cardPositionToDirection = (x, y) => {
+  x = x - 791.0; // arena center
+  y = y - 593.0;
+  const dirNum = Math.round(6 - 4 * Math.atan2(x, y) / Math.PI) % 8;
+  // shifts over the resulting direction number for no gaps, and to keep each row together.
+  // returns [NW, N, NE, SE, S, SW]
+  return dirNum >= 4 ? dirNum - 2 : dirNum - 1;
+};
+const cardOutputStrings = {
+  N: Outputs.dirN,
+  S: Outputs.dirS,
+  NW: Outputs.dirNW,
+  NE: Outputs.dirNE,
+  SE: Outputs.dirSE,
+  SW: Outputs.dirSW,
+  next: Outputs.next,
+  unknown: Outputs.unknown,
+  start: {
+    en: 'Start ${dir}',
+    cn: '${dir} 开始',
+  },
+};
 Options.Triggers.push({
   id: 'LivingMemory',
   zoneId: ZoneId.LivingMemory,
   initData: () => ({
     executionSafe: [],
     forecastSafe: [],
+    muCardSpots: [],
+    muDrawnCardIds: [],
+    muOnCard: 0,
+    muSafeDirections: [],
+    muCardPattern: null,
   }),
   triggers: [
     // ****** A-RANK: Cat's Eye ****** //
@@ -50,6 +125,7 @@ Options.Triggers.push({
         text: {
           en: 'Face away from landing marker',
           de: 'Schau weg von der Ziel-Markierung',
+          fr: 'Orientez-vous ailleurs du marqueur d\'arrivée',
           cn: '背对落地点',
           ko: '바닥징 뒤돌기',
         },
@@ -66,13 +142,14 @@ Options.Triggers.push({
         text: {
           en: 'Face toward landing marker',
           de: 'Schau zur Ziel-Markierung',
+          fr: 'Orientez-vous vers le marqueur d\'arrivée',
           cn: '面向落地点',
           ko: '바닥징 쳐다보기',
         },
       },
     },
     {
-      id: 'Hunt Cat\'s Eye Bloodshot Gaze',
+      id: 'Hunt Cat\'s Eye Bloodshot Gaze + Look Away',
       type: 'StartsUsing',
       netRegex: { id: '9673', source: 'Cat\'s Eye', capture: false },
       alertText: (_data, _matches, output) => output.text(),
@@ -80,8 +157,23 @@ Options.Triggers.push({
         text: {
           en: 'Stack (face away from target)',
           de: 'Sammeln (Schau weg vom Ziel)',
+          fr: 'Pack (ne regardez pas la cible)',
           cn: '分摊 (背对目标)',
           ko: '쉐어 (대상에게서 뒤돌기)',
+        },
+      },
+    },
+    {
+      id: 'Hunt Cat\'s Eye Bloodshot Gaze + Look Toward',
+      type: 'StartsUsing',
+      netRegex: { id: '9AF4', source: 'Cat\'s Eye', capture: false },
+      alertText: (_data, _matches, output) => output.text(),
+      outputStrings: {
+        text: {
+          en: 'Stack (face toward target)',
+          fr: 'Pack (regardez la cible)',
+          cn: '分摊 (面向目标)',
+          ko: '쉐어 (대상 바라보기)',
         },
       },
     },
@@ -207,14 +299,219 @@ Options.Triggers.push({
         next: Outputs.next,
       },
     },
+    // ****** Boss Fate: Mica the Magical Mu ****** //
+    // Aoe (9733 is cast shortly later as the actual aoe)
+    {
+      id: 'Hunt Mica the Magical Mu Spark of Imagination',
+      type: 'StartsUsing',
+      netRegex: { id: '9732', source: 'Mica the Magical Mu', capture: false },
+      response: Responses.aoe(),
+    },
+    // tank buster cleave (part of 9730 Shimmerstrike)
+    {
+      id: 'Hunt Mica the Magical Mu Shimmerstorm Tankbuster',
+      type: 'StartsUsing',
+      netRegex: { id: '9731', source: 'Mica the Magical Mu', capture: true },
+      suppressSeconds: 1,
+      response: Responses.tankCleave(),
+    },
+    // random puddles under people. Shimmerstorm (972F) or Shimmerstrike (9730) spawn them.
+    {
+      id: 'Hunt Mica the Magical Mu Shimmerstorm',
+      type: 'StartsUsing',
+      netRegex: { id: '972F', source: 'Mica the Magical Mu', capture: false },
+      suppressSeconds: 1,
+      alertText: (_data, _matches, output) => {
+        return output.avoid();
+      },
+      outputStrings: {
+        avoid: {
+          en: 'Dodge puddles',
+          cn: '躲避圈圈',
+        },
+      },
+    },
+    // donut followed by point-blank aoe (972D Twinkling Ring -> 9729 Twinkling Flourish)
+    {
+      id: 'Hunt Mica the Magical Mu Round of Applause',
+      type: 'StartsUsing',
+      netRegex: { id: '972B', source: 'Mica the Magical Mu', capture: false },
+      response: Responses.getInThenOut(),
+    },
+    {
+      id: 'Hunt Mica the Magical Mu Twinkling Ring',
+      type: 'Ability',
+      netRegex: { id: '972D', source: 'Mica the Magical Mu', capture: false },
+      suppressSeconds: 1,
+      response: Responses.getOut(),
+    },
+    // point-blank aoe followed by donut (972A Twinkling Flourish -> 972C Twinkling Ring)
+    {
+      id: 'Hunt Mica the Magical Mu Flourishing Bow',
+      type: 'StartsUsing',
+      netRegex: { id: '9728', source: 'Mica the Magical Mu', capture: false },
+      response: Responses.getOutThenIn(),
+    },
+    {
+      id: 'Hunt Mica the Magical Mu Twinkling Flourish',
+      type: 'Ability',
+      netRegex: { id: '972A', source: 'Mica the Magical Mu', capture: false },
+      suppressSeconds: 1,
+      response: Responses.getIn(),
+    },
+    // protein pizza slices, echo after (9726 6.7s, 9727 4.7s)
+    {
+      id: 'Hunt Mica the Magical Mu Double Misdirect',
+      type: 'StartsUsing',
+      netRegex: { id: '9725', source: 'Mica the Magical Mu', capture: false },
+      infoText: (_data, _matches, output) => {
+        return output.protean();
+      },
+      outputStrings: {
+        protean: 'Protean x2 (avoid => move into first cleaves)',
+      },
+    },
+    {
+      id: 'Hunt Mica the Magical Mu Double Misdirect Move',
+      type: 'Ability',
+      netRegex: { id: '9727', source: 'Mica the Magical Mu', capture: false },
+      suppressSeconds: 1,
+      response: Responses.moveAway('alert'),
+    },
+    // Spawns a formation of 6 cards in various patterns.
+    {
+      id: 'Hunt Mica the Magical Mu Deal',
+      type: 'StartsUsing',
+      netRegex: { id: '9709', source: 'Mica the Magical Mu', capture: false },
+      run: (data) => {
+        data.muDrawnCardIds = [];
+        data.muSafeDirections = [];
+        data.muCardSpots = [];
+        data.muOnCard = 0;
+      },
+    },
+    {
+      id: 'Hunt Mica the Magical Mu Card Spawn Collect',
+      type: 'CombatantMemory',
+      netRegex: {
+        id: '4[0-9A-Fa-f]{7}',
+        pair: [{ key: 'BNpcID', value: Object.keys(muCardNpcIdMap) }],
+        capture: true,
+      },
+      run: (data, matches) => {
+        if (
+          matches.pairBNpcID !== undefined &&
+          matches.pairPosX !== undefined &&
+          matches.pairPosY !== undefined
+        ) {
+          const x = parseFloat(matches.pairPosX);
+          const y = parseFloat(matches.pairPosY);
+          const positionIndex = cardPositionToDirection(x, y);
+          const number = muCardNpcIdMap[matches.pairBNpcID];
+          if (number === undefined)
+            throw new UnreachableCode();
+          data.muCardSpots[positionIndex] = number;
+        }
+      },
+    },
+    // Draws a card for you to memorize for later.
+    // Can show 2 or 3 cards. If 2 cards, the card pattern on the floor is [1, 2, 3, 6, 5, 4].
+    // If 3 cards, there only 6 draw patterns and can be determined based only on the first cast. There are
+    // several floor card patterns, but we do not care.
+    {
+      id: 'Hunt Mica the Magical Mu Draw (first)',
+      type: 'StartsUsing',
+      netRegex: {
+        id: Object.keys(muCardFirstDrawMap),
+        source: 'Mica the Magical Mu',
+        capture: true,
+      },
+      condition: (data) => data.muDrawnCardIds.length === 0,
+      preRun: (data) => {
+        if (data.muCardSpots.length === 6) {
+          const [card1, card2, card3] = data.muCardSpots;
+          data.muCardPattern = (card1 === 1 && card2 === 2 && card3 === 3) ? 'two' : 'three';
+        } else {
+          data.muCardPattern = null;
+        }
+      },
+      durationSeconds: (data) => data.muCardPattern ? 21 : 24,
+      response: (data, matches, output) => {
+        // cactbot-builtin-response
+        output.responseOutputStrings = cardOutputStrings;
+        data.muDrawnCardIds.push(matches.id);
+        if (data.muCardPattern === 'two') {
+          const cardValue = muCardFirstDrawMap[matches.id];
+          if (cardValue !== undefined) {
+            const cardPosIndex = data.muCardSpots.indexOf(cardValue);
+            const twoCardSafeSpot = CardSafeDirectionCol[cardPosIndex];
+            if (twoCardSafeSpot !== undefined) {
+              data.muSafeDirections.push(twoCardSafeSpot);
+              return {
+                alertText: output.start({ dir: output[twoCardSafeSpot]() }),
+              };
+            }
+          }
+        } else if (data.muCardPattern === 'three') {
+          // three card pattern
+          const safeSpots = muThreeCardPatternMap[matches.id];
+          if (safeSpots === undefined)
+            throw new UnreachableCode();
+          data.muSafeDirections = safeSpots;
+          return {
+            alertText: output.start({ dir: output[safeSpots[0]]() }),
+            infoText: safeSpots.map((dir) => output[dir]()).join(output.next()),
+          };
+        }
+      },
+    },
+    {
+      id: 'Hunt Mica the Magical Mu Draw',
+      type: 'StartsUsing',
+      netRegex: { id: Object.keys(muCardDrawMap), source: 'Mica the Magical Mu', capture: true },
+      durationSeconds: 12,
+      infoText: (data, matches, output) => {
+        if (data.muDrawnCardIds.length === 0)
+          return;
+        data.muDrawnCardIds.push(matches.id);
+        const cardValue = muCardDrawMap[matches.id];
+        if (cardValue === undefined)
+          throw new UnreachableCode();
+        const cardPosIndex = data.muCardSpots.indexOf(cardValue);
+        const twoCardSafeSpot = CardSafeDirectionCol[cardPosIndex];
+        if (data.muCardPattern === 'two') {
+          if (twoCardSafeSpot !== undefined)
+            data.muSafeDirections.push(twoCardSafeSpot);
+          if (data.muDrawnCardIds.length === 2)
+            return data.muSafeDirections.map((dir) => output[dir]()).join(output.next());
+        }
+      },
+      outputStrings: cardOutputStrings,
+    },
+    // Detonates all but the correct card, need to be in the right spot by cast end. (9717 to do the damage)
+    {
+      id: 'Hunt Mica the Magical Mu Card Trick',
+      type: 'Ability',
+      netRegex: { id: '9716', source: 'Mica the Magical Mu', capture: false },
+      durationSeconds: 7,
+      alertText: (data, _matches, output) => {
+        const step = data.muSafeDirections[++data.muOnCard];
+        if (step !== undefined) {
+          return output[step]();
+        }
+      },
+      outputStrings: cardOutputStrings,
+    },
   ],
   timelineReplace: [
     {
       'locale': 'de',
+      'missingTranslations': true,
       'replaceSync': {
         'Cat\'s Eye': 'Katzenauge',
         'Sally the Sweeper': 'Sally (?:der|die|das) Fegerin',
         'The Forecaster': 'Wetterreporter',
+        // 'Mica the Magical Mu': 'Mica (?:der|die|das) Magisch[rs] Mu',
       },
     },
     {
@@ -223,6 +520,7 @@ Options.Triggers.push({
         'Cat\'s Eye': 'Œil-de-chat',
         'Sally the Sweeper': 'Sally la balayeuse',
         'The Forecaster': 'Monsieur météo',
+        'Mica the Magical Mu': 'Mica le mu',
       },
     },
     {
@@ -231,6 +529,16 @@ Options.Triggers.push({
         'Cat\'s Eye': 'キャッツアイ',
         'Sally the Sweeper': 'サリー・ザ・スイーパー',
         'The Forecaster': 'ウェザーリポーター',
+        'Mica the Magical Mu': 'マイカ・ザ・ムー',
+      },
+    },
+    {
+      'locale': 'cn',
+      'replaceSync': {
+        'Cat\'s Eye': '猫眼',
+        'Sally the Sweeper': '清除者萨利',
+        'The Forecaster': '天气预报机器人',
+        'Mica the Magical Mu': '亩鼠米卡',
       },
     },
   ],
