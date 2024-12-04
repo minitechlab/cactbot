@@ -249,7 +249,38 @@ const triggerSet: TriggerSet<Data> = {
       },
     },
     // P2 -- Usurper Of Frost
-
+    {
+      id: 'FRU P2 Axe / Scythe Kick',
+      type: 'StartsUsing',
+      netRegex: { id: ['9D0A', '9D0B'], source: 'Oracle\'s Reflection', capture: true },
+      alertText: (_data, matches, output) => {
+        return matches.id === '9D0A' ? output.axeKick!() : output.scytheKick!();
+      },
+      outputStrings: {
+        axeKick: {
+          en: 'Out',
+        },
+        scytheKick: {
+          en: 'In',
+        },
+      },
+    },
+    {
+      id: 'FRU P2 Twin Silence / Stillness',
+      type: 'StartsUsing',
+      netRegex: { id: ['9D02', '9D01'], source: 'Oracle\'s Reflection', capture: true },
+      alertText: (_data, matches, output) => {
+        return matches.id === '9D02' ? output.silence!() : output.stillness!();
+      },
+      outputStrings: {
+        silence: {
+          en: 'Front => back',
+        },
+        stillness: {
+          en: 'Back => front',
+        },
+      },
+    },
     // Crystals
 
     // P3 -- Oracle Of Darkness
@@ -270,6 +301,7 @@ const triggerSet: TriggerSet<Data> = {
       'replaceSync': {
         'Fatebreaker(?!\')': 'fusioniert(?:e|er|es|en) Ascian',
         'Fatebreaker\'s Image': 'Abbild des fusionierten Ascians',
+        'Oracle\'s Reflection': 'Oracle\'s Reflection',
       },
       'replaceText': {
         'Blastburn': 'Brandstoß',
@@ -297,6 +329,7 @@ const triggerSet: TriggerSet<Data> = {
       'replaceSync': {
         'Fatebreaker(?!\')': 'Sabreur de destins',
         'Fatebreaker\'s Image': 'double du Sabreur de destins',
+        'Oracle\'s Reflection': 'Oracle\'s Reflection',
       },
       'replaceText': {
         'Blastburn': 'Explosion brûlante',
@@ -324,6 +357,7 @@ const triggerSet: TriggerSet<Data> = {
       'replaceSync': {
         'Fatebreaker(?!\')': 'フェイトブレイカー',
         'Fatebreaker\'s Image': 'フェイトブレイカーの幻影',
+        'Oracle\'s Reflection': 'Oracle\'s Reflection',
       },
       'replaceText': {
         'Blastburn': 'バーンブラスト',
