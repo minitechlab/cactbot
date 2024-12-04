@@ -481,6 +481,38 @@ const triggerSet: TriggerSet<Data> = {
         unknown: Outputs.unknown,
       },
     },
+    {
+      id: 'FRU P2 Twin Silence / Stillness',
+      type: 'StartsUsing',
+      netRegex: { id: ['9D02', '9D01'], source: 'Oracle\'s Reflection', capture: true },
+      alertText: (_data, matches, output) => {
+        return matches.id === '9D02' ? output.silence!() : output.stillness!();
+      },
+      outputStrings: {
+        silence: {
+          en: 'Front => back',
+        },
+        stillness: {
+          en: 'Back => front',
+        },
+      },
+    },
+    {
+      id: 'FRU P2 Banish III',
+      type: 'StartsUsing',
+      netRegex: { id: ['9D1E', '9D1F'], source: 'Usurper of Frost', capture: true },
+      alertText: (_data, matches, output) => {
+        return matches.id === '9D1E' ? output.stack!() : output.spread!();
+      },
+      outputStrings: {
+        stack: {
+          en: 'Stack',
+        },
+        spread: {
+          en: 'Spread',
+        },
+      },
+    },
     // Crystals
 
     // P3 -- Oracle Of Darkness
