@@ -230,7 +230,7 @@ Options.Triggers.push({
       id: 'FRU P2 Axe / Scythe Kick',
       type: 'StartsUsing',
       netRegex: { id: ['9D0A', '9D0B'], source: 'Oracle\'s Reflection', capture: true },
-      infoText: (_data, matches, output) => {
+      alertText: (_data, matches, output) => {
         return matches.id === '9D0A' ? output.axeKick() : output.scytheKick();
       },
       outputStrings: {
@@ -246,7 +246,7 @@ Options.Triggers.push({
       id: 'FRU P2 Twin Silence / Stillness',
       type: 'StartsUsing',
       netRegex: { id: ['9D02', '9D04'], source: 'Oracle\'s Reflection', capture: true },
-      infoText: (_data, matches, output) => {
+      alertText: (_data, matches, output) => {
         return matches.id === '9D02' ? output.silence() : output.stillness();
       },
       outputStrings: {
