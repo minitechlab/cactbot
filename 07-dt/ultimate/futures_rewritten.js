@@ -457,9 +457,9 @@ Options.Triggers.push({
     {
       id: 'FRU P2 Banish III',
       type: 'StartsUsing',
-      netRegex: { id: ['9D1E', '9D1F'], source: 'Usurper of Frost', capture: true },
+      netRegex: { id: ['9D1C', '9D1D'], source: 'Usurper of Frost', capture: true },
       alertText: (_data, matches, output) => {
-        return matches.id === '9D1E' ? output.stack() : output.spread();
+        return matches.id === '9D1C' ? output.stack() : output.spread();
       },
       outputStrings: {
         stack: {
