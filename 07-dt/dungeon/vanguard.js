@@ -208,7 +208,6 @@ Options.Triggers.push({
     },
     {
       'locale': 'fr',
-      'missingTranslations': true,
       'replaceSync': {
         'Protector': 'Protecteur',
         'Vanguard Commander R8': 'commandant de L\'Avant-garde R8',
@@ -216,6 +215,9 @@ Options.Triggers.push({
         'Zander the Snakeskinner': 'Zander le constricteur',
       },
       'replaceText': {
+        '\\(corners\\)': '(Coins)',
+        '\\(ground AoEs\\)': '(AoE au sol)',
+        '\\(sides\\)': '(Côtés)',
         '(?<! )Rush': 'Ruée',
         'Aerial Offensive': 'Attaque aérienne',
         'Battery Circuit': 'Fulgurocanon rotatif',
@@ -347,7 +349,8 @@ Options.Triggers.push({
         'Bombardment': '폭격',
         'Burst': '대폭발',
         'Dispatch': '소대 소집',
-        'Electrosurge': '전격 발사',
+        'Electrosurge(?! )': '전격 발사',
+        'Electrosurge \\+ Rush': '전격 발사 + 돌진',
         'Electrothermia': '전기열',
         'Electrowave': '전기파',
         'Electrowhirl': '일렉트로 선회',
