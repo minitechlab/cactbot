@@ -1666,6 +1666,18 @@ Options.Triggers.push({
     // ************************
     // P4 -- Duo
     // ************************
+    {
+      id: 'FRU P4 Akh Rhai',
+      type: 'StartsUsing',
+      netRegex: { id: '9D2D', source: 'Usurper of Frost', capture: false },
+      response: Responses.moveAway(),
+    },
+    {
+      id: 'FRU P4 Darklit Dragonsong',
+      type: 'StartsUsing',
+      netRegex: { id: '9D2F', source: 'Usurper of Frost', capture: false },
+      response: Responses.bigAoe(),
+    },
     // ************************
     // P5 -- Pandora
     // ************************
