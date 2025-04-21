@@ -35,6 +35,30 @@ const feverIdMap = {
   'A70C': 'dirW',
   'A70D': 'dirE', // west cleave
 };
+const hustleMap = {
+  // Frogtourage clones:
+  'A775': 'right',
+  'A776': 'left',
+  // Boss:
+  'A724': 'right',
+  'A725': 'left',
+};
+const getSafeDirsForCloneCleave = (matches) => {
+  const isLeftCleave = hustleMap[matches.id] === 'left';
+  // Snap the frog to the nearest cardinal in the direction of their cleave
+  const headingAdjust = isLeftCleave ? -(Math.PI / 8) : (Math.PI / 8);
+  let snappedHeading = (parseFloat(matches.heading) + headingAdjust) % Math.PI;
+  if (snappedHeading < -Math.PI)
+    snappedHeading = Math.PI - snappedHeading;
+  snappedHeading = snappedHeading % Math.PI;
+  // Frog's snapped heading and the next one CW or CCW depending on cleave direction are safe
+  const snappedFrogDir = Directions.hdgTo4DirNum(snappedHeading);
+  const otherSafeDir = ((snappedFrogDir + 4) + (isLeftCleave ? 1 : -1)) % 4;
+  return [
+    Directions.outputCardinalDir[snappedFrogDir] ?? 'unknown',
+    Directions.outputCardinalDir[otherSafeDir] ?? 'unknown',
+  ];
+};
 Options.Triggers.push({
   id: 'AacCruiserweightM1Savage',
   zoneId: ZoneId.AacCruiserweightM1Savage,
@@ -47,6 +71,8 @@ Options.Triggers.push({
       alpha: 0,
       beta: 0,
     },
+    storedHustleCleaves: [],
+    hustleCleaveCount: 0,
   }),
   triggers: [
     {
@@ -85,6 +111,7 @@ Options.Triggers.push({
           en: '(${mech} later)',
           de: '(${mech} später)',
           fr: '(${mech} après)',
+          ja: '(あとで ${mech})',
           cn: '(稍后 ${mech})',
           ko: '(나중에 ${mech})',
         },
@@ -112,6 +139,7 @@ Options.Triggers.push({
           en: 'Start ${dir} (${num} hits) => ${mech}',
           de: 'Start ${dir} (${num} Treffer) => ${mech}',
           fr: 'Commencez ${dir} (${num} coups) => ${mech}',
+          ja: '${dir} 開始 (${num} ポイント) からの ${mech}',
           cn: '${dir} 开始 (打 ${num} 次) => ${mech}',
           ko: '${dir} 시작 (${num}번 공격) => ${mech}',
         },
@@ -157,6 +185,7 @@ Options.Triggers.push({
           en: '(short cleanse)',
           de: '(kurze Reinigung)',
           fr: '(compteur court)',
+          ja: '(先にスポットライト)',
           cn: '(短舞点名)',
           ko: '(짧은 디버프)',
         },
@@ -164,6 +193,7 @@ Options.Triggers.push({
           en: '(long cleanse)',
           de: '(lange Reinigung)',
           fr: '(compteur long)',
+          ja: '(あとでスポットライト)',
           cn: '(长舞点名)',
           ko: '(긴 디버프)',
         },
@@ -184,6 +214,7 @@ Options.Triggers.push({
           en: 'Cleanse in spotlight',
           de: 'Reinige im Scheinwerfer',
           fr: 'Purifiez sous le spot',
+          ja: 'スポットライトで浄化',
           cn: '灯下跳舞',
           ko: '스포트라이트에 서기',
         },
@@ -208,6 +239,7 @@ Options.Triggers.push({
           en: 'Cleanse in spotlight',
           de: 'Reinige im Scheinwerfer',
           fr: 'Purifiez sous le spot',
+          ja: 'スポットライトで浄化',
           cn: '灯下跳舞',
           ko: '스포트라이트에 서기',
         },
@@ -215,6 +247,7 @@ Options.Triggers.push({
           en: 'Bait Frog',
           de: 'Frosch ködern',
           fr: 'Prenez la grenouille',
+          ja: 'カエル誘導',
           cn: '引导青蛙',
           ko: '개구리 유도',
         },
@@ -240,6 +273,7 @@ Options.Triggers.push({
           en: 'Cleanse in spotlight',
           de: 'Reinige im Scheinwerfer',
           fr: 'Purifiez sous le spot',
+          ja: 'スポットライトで浄化',
           cn: '灯下跳舞',
           ko: '스포트라이트에 서기',
         },
@@ -247,6 +281,7 @@ Options.Triggers.push({
           en: 'Bait Frog',
           de: 'Frosch ködern',
           fr: 'Prenez la grenouille',
+          ja: 'カエル誘導',
           cn: '引导青蛙',
           ko: '개구리 유도',
         },
@@ -263,6 +298,7 @@ Options.Triggers.push({
           en: 'Max Melee => Under',
           de: 'Max Nahkampf => Unter ihn',
           fr: 'Max mêlée => Dessous',
+          ja: '外からボス下に',
           cn: '钢铁 => 月环',
           ko: '칼끝딜 => 안으로',
         },
@@ -279,6 +315,7 @@ Options.Triggers.push({
           en: 'Under => Max Melee',
           de: 'Unter ihn => Max Nahkampf',
           fr: 'Dessous => Max mêlée',
+          ja: 'ボス下から外に',
           cn: '月环 => 钢铁',
           ko: '안으로 => 칼끝딜',
         },
@@ -335,6 +372,7 @@ Options.Triggers.push({
           en: '${order} merge',
           de: '${order} berühren',
           fr: '${order} fusion',
+          ja: '${order} にペア割り',
           cn: '${order} 撞毒',
           ko: '${order} 융합',
         },
@@ -342,6 +380,7 @@ Options.Triggers.push({
           en: 'First',
           de: 'Erstes',
           fr: 'Première',
+          ja: '最初',
           cn: '第1组',
           ko: '첫번째',
         },
@@ -349,6 +388,7 @@ Options.Triggers.push({
           en: 'Second',
           de: 'Zweites',
           fr: 'Seconde',
+          ja: '2番目',
           cn: '第2组',
           ko: '두번째',
         },
@@ -356,6 +396,7 @@ Options.Triggers.push({
           en: 'Third',
           de: 'Drittes',
           fr: 'Troisième',
+          ja: '3番目',
           cn: '第3组',
           ko: '세번째',
         },
@@ -363,6 +404,7 @@ Options.Triggers.push({
           en: 'Fourth',
           de: 'Viertes',
           fr: 'Quatrième',
+          ja: '4番目',
           cn: '第4组',
           ko: '네번째',
         },
@@ -381,6 +423,7 @@ Options.Triggers.push({
           en: 'Merge debuff',
           de: 'Debuff berühren',
           fr: 'Fusionner le debuff',
+          ja: 'ペア割り',
           cn: '撞毒',
           ko: '융합하기',
         },
@@ -436,9 +479,96 @@ Options.Triggers.push({
       netRegex: { id: 'A770', source: 'Dancing Green', capture: false },
       response: Responses.bigAoe(),
     },
+    {
+      id: 'R5S Do the Hustle',
+      type: 'StartsUsing',
+      netRegex: { id: Object.keys(hustleMap) },
+      preRun: (data, matches) => data.storedHustleCleaves.push(matches),
+      infoText: (data, _matches, outputs) => {
+        // Order is double cleave, double cleave, single cleave, triple cleave
+        const expectedCountMap = [
+          2,
+          2,
+          1,
+          3,
+        ];
+        if (
+          data.storedHustleCleaves.length <
+            (expectedCountMap[data.hustleCleaveCount] ?? 0)
+        )
+          return;
+        const cleaves = data.storedHustleCleaves;
+        const currentCleaveCount = data.hustleCleaveCount;
+        data.storedHustleCleaves = [];
+        ++data.hustleCleaveCount;
+        // Double cleaves from clones
+        if (currentCleaveCount === 0 || currentCleaveCount === 1) {
+          const [cleave1, cleave2] = cleaves;
+          if (cleave1 === undefined || cleave2 === undefined)
+            return;
+          const safeDirs1 = getSafeDirsForCloneCleave(cleave1);
+          const safeDirs2 = getSafeDirsForCloneCleave(cleave2);
+          for (const dir of safeDirs1) {
+            if (safeDirs2.includes(dir)) {
+              return outputs[dir]();
+            }
+          }
+          return outputs['unknown']();
+        }
+        // Single boss cleave
+        if (currentCleaveCount === 2) {
+          const [cleave1] = cleaves;
+          if (cleave1 === undefined)
+            return;
+          return hustleMap[cleave1.id] === 'left' ? outputs['dirE']() : outputs['dirW']();
+        }
+        // Double cleaves from clones plus boss cleave
+        if (currentCleaveCount === 3) {
+          const cleave3 = cleaves.find((cleave) => ['A724', 'A725'].includes(cleave.id));
+          const [cleave1, cleave2] = cleaves.filter((c) => c !== cleave3);
+          if (cleave1 === undefined || cleave2 === undefined || cleave3 === undefined)
+            return;
+          const safeDirs1 = getSafeDirsForCloneCleave(cleave1);
+          const safeDirs2 = getSafeDirsForCloneCleave(cleave2);
+          let safeDir = 'unknown';
+          for (const dir of safeDirs1) {
+            if (safeDirs2.includes(dir)) {
+              safeDir = dir;
+            }
+          }
+          const isBossLeftCleave = hustleMap[cleave3.id] === 'left';
+          // safeDir should be either 'dirN' or 'dirS' at this point, adjust with boss left/right
+          if (safeDir === 'dirN') {
+            if (isBossLeftCleave)
+              return outputs['dirNNE']();
+            return outputs['dirNNW']();
+          }
+          if (safeDir === 'dirS') {
+            if (isBossLeftCleave)
+              return outputs['dirSSE']();
+            return outputs['dirSSW']();
+          }
+          return outputs['unknown']();
+        }
+        return outputs['unknown']();
+      },
+      outputStrings: {
+        ...Directions.outputStrings16Dir,
+      },
+    },
   ],
   timelineReplace: [
     {
+      locale: 'en',
+      replaceText: {
+        'Flip to A-side/Flip to B-side': 'Flip to A/B-side',
+        'Play A-side/Play B-side': 'Play A/B-side',
+        '2-snap Twist & Drop the Needle/3-snap Twist & Drop the Needle/4-snap Twist & Drop the Needle':
+          '2/3/4-snap Twist',
+      },
+    },
+    {
+      'missingTranslations': true,
       'locale': 'de',
       'replaceSync': {
         'Dancing Green': 'Springhis Khan',
@@ -447,6 +577,7 @@ Options.Triggers.push({
       'replaceText': {},
     },
     {
+      'missingTranslations': true,
       'locale': 'fr',
       'replaceSync': {
         'Dancing Green': 'Dancing Green',
@@ -455,6 +586,7 @@ Options.Triggers.push({
       'replaceText': {},
     },
     {
+      'missingTranslations': true,
       'locale': 'ja',
       'replaceSync': {
         'Dancing Green': 'ダンシング・グリーン',
@@ -477,13 +609,13 @@ Options.Triggers.push({
         'Ensemble Assemble': 'ダンサーズ・アッセンブル',
         'Arcady Night Fever': 'アルカディア・ナイトフィーバー',
         'Get Down!': 'ゲットダウン！',
-        'Let\'s Dance': 'レッツダンス！',
+        'Let\'s Dance(?!!)': 'レッツダンス！',
         'Freak Out': '静音爆発',
         'Let\'s Pose': 'レッツポーズ！',
         'Ride the Waves': 'ウェーブ・オン・ウェーブ',
         'Quarter Beats': '4ビート',
         'Eighth Beats': '8ビート',
-        'Frogtourage': 'カモン！ フロッグダンサー',
+        'Frogtourage(?! )': 'カモン！ フロッグダンサー',
         'Moonburn': 'ムーンバーン',
         'Back-up Dance': 'ダンシングウェーブ',
         'Arcady Night Encore Starts': 'ナイトフィーバー・アンコール',
