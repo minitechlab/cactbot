@@ -47,14 +47,23 @@ const stoneWindOutputStrings = {
   stoneWindNum: {
     en: '${debuff} ${num}',
     de: '${debuff} ${num}',
+    ja: '${debuff} ${num}',
+    cn: '${debuff} ${num}',
+    ko: '${debuff} ${num}',
   },
   stone: {
     en: 'Stone',
     de: 'Erde',
+    ja: '土',
+    cn: '土',
+    ko: '땅',
   },
   wind: {
     en: 'Wind',
     de: 'Wind',
+    ja: '風',
+    cn: '风',
+    ko: '바람',
   },
   unknown: Outputs.unknown,
 };
@@ -63,10 +72,16 @@ const moonlightOutputStrings = {
   safeQuad: {
     en: '${quad}',
     de: '${quad}',
+    ja: '${quad}',
+    cn: '${quad}',
+    ko: '${quad}',
   },
   safeQuadrants: {
     en: '${quad1} => ${quad2}',
     de: '${quad1} => ${quad2}',
+    ja: '${quad1} => ${quad2}',
+    cn: '${quad1} => ${quad2}',
+    ko: '${quad1} => ${quad2}',
   },
 };
 const championOutputStrings = {
@@ -77,29 +92,47 @@ const championOutputStrings = {
   donut: {
     en: 'Donut',
     de: 'Donut',
+    ja: 'ドーナツ',
+    cn: '月环',
+    ko: '도넛',
   },
   sides: Outputs.sides,
   mechanics: {
     en: '(${dir}) ${mech1} => ${mech2} => ${mech3} => ${mech4} => ${mech5}',
     de: '(${dir}) ${mech1} => ${mech2} => ${mech3} => ${mech4} => ${mech5}',
+    ja: '(${dir}) ${mech1} => ${mech2} => ${mech3} => ${mech4} => ${mech5}',
+    cn: '(${dir}) ${mech1} => ${mech2} => ${mech3} => ${mech4} => ${mech5}',
+    ko: '(${dir}) ${mech1} => ${mech2} => ${mech3} => ${mech4} => ${mech5}',
   },
   left: Outputs.left,
   right: Outputs.right,
   leftSide: {
     en: 'Left Side',
     de: 'Linke Seite',
+    ja: '左側',
+    cn: '左侧',
+    ko: '왼쪽',
   },
   rightSide: {
     en: 'Right Side',
     de: 'Rechte Seite',
+    ja: '右側',
+    cn: '右侧',
+    ko: '오른쪽',
   },
   unknownSide: {
     en: '??? Side',
     de: '??? Seite',
+    ja: '??? 側',
+    cn: '??? 侧',
+    ko: '??? 쪽',
   },
   dirMechanic: {
     en: '${dir} ${mech}',
     de: '${dir} ${mech}',
+    ja: '${dir} ${mech}',
+    cn: '${dir} ${mech}',
+    ko: '${dir} ${mech}',
   },
 };
 // Platform, Mechs
@@ -117,6 +150,22 @@ const championCounterOrders = {
   2: ['out', 'in', 'donut', 'sides', 'in'],
   3: ['in', 'out', 'in', 'donut', 'sides'],
   4: ['sides', 'in', 'out', 'in', 'donut'],
+};
+// Map donutPlatform to mechIndex for Counterclockwise
+const championCounterIndex = {
+  0: [0, 1, 2, 3, 4],
+  1: [4, 0, 1, 2, 3],
+  2: [3, 4, 0, 1, 2],
+  3: [2, 3, 4, 0, 1],
+  4: [1, 2, 3, 4, 0],
+};
+// Twofold Tempest Platform to Bait Mapping
+const twofoldPlatformNumToBaitDir = {
+  0: 'unknown',
+  1: 'dirNE',
+  2: 'dirSE',
+  3: 'dirSW',
+  4: 'dirNW',
 };
 // Return the combatant's platform by number
 const getPlatformNum = (x, y) => {
@@ -228,6 +277,9 @@ Options.Triggers.push({
         text: {
           en: 'Light Party Platform',
           de: 'Leichter Trupp Platform',
+          ja: '東西の島で 4：4 頭割り',
+          cn: '东西岛治疗组分摊站位',
+          ko: '4:4 그룹별 플랫폼',
         },
       },
     },
@@ -240,6 +292,9 @@ Options.Triggers.push({
         text: {
           en: 'UV Positions',
           de: 'Ätherlicht Positionen',
+          ja: '魔光位置へ',
+          cn: '魔光站位',
+          ko: '마광 산개',
         },
       },
     },
@@ -252,6 +307,9 @@ Options.Triggers.push({
         text: {
           en: 'UV Positions',
           de: 'Ätherlicht Positionen',
+          ja: '魔光位置へ',
+          cn: '魔光站位',
+          ko: '마광 산개',
         },
       },
     },
@@ -264,6 +322,9 @@ Options.Triggers.push({
         text: {
           en: 'Bait Mooncleaver',
           de: 'Ködere Klingensturz',
+          ja: '剛刃一閃を誘導',
+          cn: '引导碎地板',
+          ko: '강인일섬 유도',
         },
       },
     },
@@ -275,6 +336,9 @@ Options.Triggers.push({
         text: {
           en: 'Howling Eight Position',
           de: 'Achtfache Lichtkugel Position',
+          ja: '八連光弾の位置へ',
+          cn: '八连光弹集合',
+          ko: '8연속 빛 폭탄 위치로',
         },
       },
     },
@@ -333,18 +397,30 @@ Options.Triggers.push({
         inCardsPartners: {
           en: 'In + Cards + Partners',
           de: 'Rein + Kardinal + Partner',
+          ja: '内側 + 十字 + ペア',
+          cn: '内侧 + 十字 + 分摊',
+          ko: '안 + 십자방향 + 쉐어',
         },
         inInterCardsPartners: {
           en: 'In + Intercards + Partners',
           de: 'Rein + Interkardinal + Partner',
+          ja: '内側 + 斜め + ペア',
+          cn: '内侧 + 斜角 + 分摊',
+          ko: '안 + 대각선 + 쉐어',
         },
         outCardsProtean: {
           en: 'Out + Cards + Protean',
           de: 'Raus + Kardinal + Himmelsrichtungen',
+          ja: '外側 + 十字 + 散開',
+          cn: '外侧 + 十字 + 分散',
+          ko: '밖 + 십자방향 + 산개',
         },
         outInterCardsProtean: {
           en: 'Out + InterCards + Protean',
           de: 'Raus + Interkardinal + Himmelsrichtungen',
+          ja: '外側 + 斜め + 散開',
+          cn: '外侧 + 斜角 + 分散',
+          ko: '밖 + 대각선 + 산개',
         },
       },
     },
@@ -366,10 +442,16 @@ Options.Triggers.push({
         inLater: {
           en: '(In Later)',
           de: '(später Rein)',
+          ja: '(あとで内側)',
+          cn: '(稍后内侧)',
+          ko: '(나중에 안)',
         },
         outLater: {
           en: '(Out Later)',
           de: '(später Raus)',
+          ja: '(あとで外側)',
+          cn: '(稍后外侧)',
+          ko: '(나중에 밖)',
         },
       },
     },
@@ -420,10 +502,16 @@ Options.Triggers.push({
         inDir: {
           en: 'In ${dir}',
           de: 'Rein ${dir}',
+          ja: '内側 ${dir}',
+          cn: '内侧 ${dir}',
+          ko: '${dir} 안',
         },
         outDir: {
           en: 'Out ${dir}',
           de: 'Raus ${dir}',
+          ja: '外側 ${dir}',
+          cn: '外侧 ${dir}',
+          ko: '${dir} 밖',
         },
       },
     },
@@ -456,10 +544,16 @@ Options.Triggers.push({
         clockwise: {
           en: '<== Clockwise',
           de: '<== Im Uhrzeigersinn',
+          ja: '<== 時計回り',
+          cn: '<== 顺时针',
+          ko: '<== 시계방향',
         },
         counterclockwise: {
           en: 'Counterclockwise ==>',
           de: 'Gegen den Uhrzeigersinn ==>',
+          ja: '反時計回り ==>',
+          cn: '逆时针 ==>',
+          ko: '반시계방향 ==>',
         },
       },
     },
@@ -511,10 +605,16 @@ Options.Triggers.push({
         knockbackTetherDir: {
           en: 'Tether: Knockback to ${dir}',
           de: 'Verbindung: Rückstoß nach ${dir}',
+          ja: '線: ${dir}へノックバック',
+          cn: '击退拉线: ${dir}',
+          ko: '선: ${dir}로 넉백',
         },
         knockbackTowers: {
           en: 'Knockback Towers',
           de: 'Rückstoß-Türme',
+          ja: 'ノックバック塔踏み',
+          cn: '击退踩塔',
+          ko: '넉백 탑',
         },
       },
     },
@@ -564,6 +664,9 @@ Options.Triggers.push({
         dirs: {
           en: '${dir1} or ${dir2}',
           de: '${dir1} oder ${dir2}',
+          ja: '${dir1} か ${dir2}',
+          cn: '${dir1} 或 ${dir2}',
+          ko: '${dir1} 또는 ${dir2}',
         },
       },
     },
@@ -704,14 +807,23 @@ Options.Triggers.push({
         wolfOfWind: {
           en: 'Green',
           de: 'Grün',
+          ja: '緑',
+          cn: '绿',
+          ko: '초록',
         },
         wolfOfStone: {
           en: 'Yellow',
           de: 'Gelb',
+          ja: '黄',
+          cn: '黄',
+          ko: '노랑',
         },
         side: {
           en: '${wolf} Side',
           de: '${wolf} Seite',
+          ja: '${wolf} 側',
+          cn: '${wolf} 侧',
+          ko: '${wolf} 쪽',
         },
       },
     },
@@ -774,6 +886,9 @@ Options.Triggers.push({
         predationOnPlayers: {
           en: 'Predation on ${player1} and ${player2}',
           de: 'Lichtwolfszirkel auf ${player1} und ${player2}',
+          ja: '${player1} と ${player2} に直線攻撃',
+          cn: '${player1} 与 ${player2} 引导直线',
+          ko: '${player1} + ${player2} 징 대상자',
         },
       },
     },
@@ -893,20 +1008,32 @@ Options.Triggers.push({
         stackThenSpread: {
           en: '${stack} => Spread',
           de: '${stack} => Verteilen',
+          ja: '${stack} => 散開',
+          cn: '${stack} => 散开',
+          ko: '${stack} => 산개',
         },
         spreadBehindClones: {
           en: 'Spread (Behind Clones)',
           de: 'Verteilen (hinter Klone)',
+          ja: '散開 (分身の後ろ)',
+          cn: '分散 (躲在分身后)',
+          ko: '산개 (분신 뒤)',
         },
         stackOnPlayer: Outputs.stackOnPlayer,
         stackOnPlayerBehindClones: {
           en: 'Stack on ${player} (Behind Clones)',
           de: 'Sammeln auf ${player} (hinter Klone)',
+          ja: '${player} に頭割り (分身の後ろ)',
+          cn: '${player} 分摊 (躲在分身后)',
+          ko: '${player}에게 모이기 (분신 뒤)',
         },
         stackOnYou: Outputs.stackOnYou,
         stackOnYouBehindClones: {
           en: 'Stack on YOU (Behind Clones)',
           de: 'Sammeln auf DIR (hinter Klone)',
+          ja: '自分に頭割り (分身の後ろ)',
+          cn: '分摊点名 (躲在分身后)',
+          ko: '쉐어징 대상자 (분신 뒤)',
         },
       },
     },
@@ -924,6 +1051,9 @@ Options.Triggers.push({
         rotate: {
           en: 'Rotate',
           de: 'Rotieren',
+          ja: '回転',
+          cn: '旋转',
+          ko: '회전',
         },
       },
     },
@@ -933,13 +1063,16 @@ Options.Triggers.push({
       type: 'StartsUsing',
       netRegex: { id: 'A78E', source: 'Wolf of Stone', capture: false },
       suppressSeconds: 1,
-      infoText: (_data, _matches, output) => {
+      alertText: (_data, _matches, output) => {
         return output.lines();
       },
       outputStrings: {
         lines: {
           en: 'Avoid Lines',
           de: 'Vermeide Linien',
+          ja: '直線攻撃を避ける',
+          cn: '躲避直线 AoE',
+          ko: '직선장판 피하기',
         },
       },
     },
@@ -1074,6 +1207,9 @@ Options.Triggers.push({
         stackThenSpread: {
           en: '${stack} => Spread',
           de: '${stack} => Verteilen',
+          ja: '${stack} => 散開',
+          cn: '${stack} => 分散',
+          ko: '${stack} => 산개',
         },
         spread: Outputs.spread,
         stackOnPlayer: Outputs.stackOnPlayer,
@@ -1113,7 +1249,7 @@ Options.Triggers.push({
         return false;
       },
       delaySeconds: (_data, matches) => parseFloat(matches.castTime) + 1,
-      infoText: (_data, _matches, output) => {
+      alertText: (_data, _matches, output) => {
         return output.cardinals();
       },
       outputStrings: {
@@ -1146,6 +1282,9 @@ Options.Triggers.push({
         uvRayOnYou: {
           en: 'UV Ray on YOU',
           de: 'Ätherlicht auf DIR',
+          ja: '自分に魔光',
+          cn: '魔光点名',
+          ko: '파란징 대상자',
         },
       },
     },
@@ -1209,7 +1348,7 @@ Options.Triggers.push({
       },
       run: (data) => {
         if (data.uvFangSafeSide !== undefined) {
-          data.myPlatformNum === undefined;
+          data.myPlatformNum = undefined;
           data.uvFangSafeSide = undefined;
           data.hasUVRay = false;
         }
@@ -1284,6 +1423,9 @@ Options.Triggers.push({
         text: {
           en: '${inout} + ${dir}',
           de: '${inout} + ${dir}',
+          ja: '${inout} + ${dir}',
+          cn: '${inout} + ${dir}',
+          ko: '${inout} + ${dir}',
         },
         unknown: Outputs.unknown,
       },
@@ -1297,6 +1439,9 @@ Options.Triggers.push({
         changePlatform: {
           en: 'Change Platform',
           de: 'Platform wechseln',
+          ja: '次の島へ',
+          cn: '换平台',
+          ko: '플랫폼 변경',
         },
       },
     },
@@ -1325,6 +1470,9 @@ Options.Triggers.push({
         purgeOnPlayers: {
           en: 'Elemental Purge on ${player1} and ${player2}',
           de: 'Siegel des Windes auf ${player1} und ${player2}',
+          ja: '魔印: ${player1} と ${player2}',
+          cn: '魔印点名: ${player1} 和 ${player2}',
+          ko: '바람지진 각인: ${player1} + ${player2}',
         },
       },
     },
@@ -1340,18 +1488,20 @@ Options.Triggers.push({
       },
     },
     {
-      id: 'R8S Twofold Tempest Initial Tether',
+      id: 'R8S Twofold Tempest Initial Tether/Bait',
       type: 'Tether',
       netRegex: { id: [headMarkerData.twofoldTether], capture: true },
       suppressSeconds: 50,
       promise: async (data, matches) => {
         const actors = (await callOverlayHandler({
           call: 'getCombatants',
-          ids: [parseInt(matches.sourceId, 16)],
+          ids: [parseInt(matches.targetId, 16)],
         })).combatants;
         const actor = actors[0];
         if (actors.length !== 1 || actor === undefined) {
-          console.error(`R8S Twofold Tempest Tether: Wrong actor count ${actors.length}`);
+          console.error(
+            `R8S Twofold Tempest Initial Tether/Bait: Wrong actor count ${actors.length}`,
+          );
           return;
         }
         const northTwoPlatforms = 94;
@@ -1365,25 +1515,45 @@ Options.Triggers.push({
           data.twofoldInitialDir = 'dirSW';
         else if (dirNS === 'N' && dirEW === 'W')
           data.twofoldInitialDir = 'dirNW';
+        // Check player position for bait call
+        const combatants = (await callOverlayHandler({
+          call: 'getCombatants',
+          names: [data.me],
+        })).combatants;
+        const me = combatants[0];
+        if (combatants.length !== 1 || me === undefined) {
+          console.error(
+            `R8S Twofold Tempest Initial Tether/Bait: Wrong combatants count ${combatants.length}`,
+          );
+          return;
+        }
+        data.myPlatformNum = getPlatformNum(me.PosX, me.PosY);
       },
       infoText: (data, _matches, output) => {
         // Default starting tether locations
         const startingDir1 = 'dirSE';
         const startingDir2 = 'dirSW';
         const initialDir = data.twofoldInitialDir ?? 'unknown';
+        const baitDir = twofoldPlatformNumToBaitDir[data.myPlatformNum ?? 0];
         switch (initialDir) {
           case startingDir1:
           case startingDir2:
             if (data.hasTwofoldTether === true)
               return output.tetherOnYou();
+            if (baitDir === initialDir)
+              return output.baitNearTetherDir({ dir: output[initialDir]() });
             return output.tetherOnDir({ dir: output[initialDir]() });
           case 'dirNE':
             if (data.hasTwofoldTether === true)
               return output.passTetherDir({ dir: output[startingDir1]() });
+            if (baitDir === startingDir1)
+              return output.baitNearTetherDir({ dir: output[startingDir1]() });
             return output.tetherOnDir({ dir: output[startingDir1]() });
           case 'dirNW':
             if (data.hasTwofoldTether === true)
               return output.passTetherDir({ dir: output[startingDir2]() });
+            if (baitDir === startingDir2)
+              return output.baitNearTetherDir({ dir: output[startingDir2]() });
             return output.tetherOnDir({ dir: output[startingDir2]() });
           case 'unknown':
             return output.tetherOnDir({ dir: output['unknown']() });
@@ -1401,24 +1571,53 @@ Options.Triggers.push({
         passTetherDir: {
           en: 'Pass Tether to ${dir}',
           de: 'Übergebe Verbindung nach ${dir}',
+          ja: '${dir} に線を渡す',
+          cn: '送线给 ${dir}',
+          ko: '${dir}로 선 넘기기',
         },
         tetherOnYou: {
           en: 'Tether on YOU',
           de: 'Verbindung auf DIR',
+          ja: '自分に線',
+          cn: '连线点名',
+          ko: '선 대상자',
         },
         tetherOnDir: {
           en: 'Tether on ${dir}',
           de: 'Verbindung auf ${dir}',
+          ja: '${dir} に線',
+          cn: '连线在 ${dir}',
+          ko: '${dir}쪽에 선',
+        },
+        baitNearTetherDir: {
+          en: 'Bait Near (Tether on ${dir})',
+          cn: '靠近诱导 (连线在 ${dir})',
+          ko: '근접 유도 (선 대상자 ${dir})',
         },
       },
     },
     {
-      id: 'R8S Twofold Tempest Tether Pass',
+      id: 'R8S Twofold Tempest Tether Pass/Bait',
       // Call pass after the puddle has been dropped
       type: 'Ability',
       netRegex: { id: 'A472', source: 'Howling Blade', capture: false },
       preRun: (data) => data.twofoldTracker = data.twofoldTracker + 1,
       suppressSeconds: 1,
+      promise: async (data) => {
+        // Check player position for bait call
+        const combatants = (await callOverlayHandler({
+          call: 'getCombatants',
+          names: [data.me],
+        })).combatants;
+        const me = combatants[0];
+        if (combatants.length !== 1 || me === undefined) {
+          console.error(
+            `R8S Twofold Tempest Tether Pass/Bait: Wrong combatants count ${combatants.length}`,
+          );
+          return;
+        }
+        data.myPlatformNum = getPlatformNum(me.PosX, me.PosY);
+      },
       infoText: (data, _matches, output) => {
         if (data.hasTwofoldTether) {
           if (data.twofoldInitialDir === 'unknown')
@@ -1438,16 +1637,23 @@ Options.Triggers.push({
         }
         if (data.twofoldInitialDir === 'unknown')
           return output.tetherOnDir({ dir: Outputs.unknown });
+        const baitDir = twofoldPlatformNumToBaitDir[data.myPlatformNum ?? 0];
         if (data.twofoldTracker === 1) {
           const passDir = data.twofoldInitialDir === 'dirSE' ? 'dirNE' : 'dirNW';
+          if (baitDir === passDir)
+            return output.baitNearTetherDir({ dir: output[passDir]() });
           return output.tetherOnDir({ dir: output[passDir]() });
         }
         if (data.twofoldTracker === 2) {
           const passDir = data.twofoldInitialDir === 'dirSE' ? 'dirNW' : 'dirNE';
+          if (baitDir === passDir)
+            return output.baitNearTetherDir({ dir: output[passDir]() });
           return output.tetherOnDir({ dir: output[passDir]() });
         }
         if (data.twofoldTracker === 3) {
           const passDir = data.twofoldInitialDir === 'dirSE' ? 'dirSW' : 'dirSE';
+          if (baitDir === passDir)
+            return output.baitNearTetherDir({ dir: output[passDir]() });
           return output.tetherOnDir({ dir: output[passDir]() });
         }
       },
@@ -1456,14 +1662,28 @@ Options.Triggers.push({
         passTether: {
           en: 'Pass Tether',
           de: 'Verbindung übergeben',
+          ja: '線を渡す',
+          cn: '送线',
+          ko: '선 넘기기',
         },
         passTetherDir: {
           en: 'Pass Tether ${dir}',
           de: 'Verbindung übergeben ${dir}',
+          ja: '${dir} に線を渡す',
+          cn: '送线给 ${dir}',
+          ko: '${dir}쪽에 선 넘기기',
         },
         tetherOnDir: {
           en: 'Tether on ${dir}',
           de: 'Verbindung auf ${dir}',
+          ja: '${dir} に線',
+          cn: '连线在 ${dir}',
+          ko: '${dir}쪽에 선',
+        },
+        baitNearTetherDir: {
+          en: 'Bait Near (Tether on ${dir})',
+          cn: '靠近诱导 (连线在 ${dir})',
+          ko: '근접 유도 (선 대상자 ${dir})',
         },
       },
     },
@@ -1540,7 +1760,11 @@ Options.Triggers.push({
         data.championOrders = orders;
         // Retrieve the mech based on our platform and donut platform
         const getMech = (playerPlatform, donutPlatform, mechs, count) => {
-          const mechIndex = (donutPlatform + count) % 5;
+          const mechIndex = clock === 'clockwise'
+            ? (donutPlatform + count) % 5
+            : championCounterIndex[donutPlatform]?.[count];
+          if (mechIndex === undefined)
+            return 'unknown';
           return mechs[playerPlatform]?.[mechIndex] ?? 'unknown';
         };
         return output.mechanics({
@@ -1601,14 +1825,19 @@ Options.Triggers.push({
         const donutPlatform = data.championDonutStart;
         const myPlatform = data.myLastPlatformNum;
         const orders = data.championOrders;
+        const clock = data.championClock;
+        const count = data.championTracker;
         // Calculate next mech index with wrap around
         const mechIndex = donutPlatform === undefined
           ? undefined
-          : (donutPlatform + data.championTracker) % 5;
+          : clock === 'clockwise'
+          ? (donutPlatform + count) % 5
+          : championCounterIndex[donutPlatform]?.[count];
         // Retrieve the mech based on our platform, donut platform, and mech index
         const mech = (myPlatform === undefined ||
             mechIndex === undefined ||
-            orders === undefined)
+            orders === undefined ||
+            clock === undefined)
           ? 'unknown'
           : orders[myPlatform]?.[mechIndex] ?? 'unknown';
         const dir = data.championFangSafeSide;
@@ -1626,7 +1855,7 @@ Options.Triggers.push({
           data.championTracker = data.championTracker + 1;
           // Shift platform history
           data.myLastPlatformNum = data.myPlatformNum;
-          data.myPlatformNum === undefined;
+          data.myPlatformNum = undefined;
           data.championFangSafeSide = undefined;
         }
       },
@@ -1650,10 +1879,16 @@ Options.Triggers.push({
         closeTetherOnYou: {
           en: 'Close Tether on YOU',
           de: 'Nahe Verbindung auf DIR',
+          ja: '自分に近づく線',
+          cn: '近线点名',
+          ko: '가까이 선 대상자',
         },
         farTetherOnYou: {
           en: 'Far Tether on YOU',
           de: 'Entfernte Verbindung auf DIR',
+          ja: '自分に離れる線',
+          cn: '远线点名',
+          ko: '멀리 선 대상자',
         },
       },
     },
@@ -1751,23 +1986,41 @@ Options.Triggers.push({
         changePlatform1: {
           en: 'Change Platform 1',
           de: 'Wechsel Platform 1',
+          ja: '次の島へ1',
+          cn: '换平台 1',
+          ko: '플랫폼 변경 1',
         },
         changePlatform2: {
           en: 'Change Platform 2',
           de: 'Wechsel Platform 2',
+          ja: '次の島へ2',
+          cn: '换平台 2',
+          ko: '플랫폼 변경 2',
         },
         changePlatform3: {
           en: 'Change Platform 3',
           de: 'Wechsel Platform 3',
+          ja: '次の島へ3',
+          cn: '换平台 3',
+          ko: '플랫폼 변경 3',
         },
         finalPlatform: {
           en: 'Change Platform (Final)',
           de: 'Wechsel Platform (Finale)',
+          ja: '次の島へ (最終)',
+          cn: '换平台 (最终平台)',
+          ko: '플랫폼 변경 (마지막)',
         },
       },
     },
   ],
   timelineReplace: [
+    {
+      'locale': 'en',
+      'replaceText': {
+        'Eminent Reign/Revolutionary Reign': 'Eminent/Revolutionary Reign',
+      },
+    },
     {
       'locale': 'de',
       'missingTranslations': true,
@@ -1979,6 +2232,162 @@ Options.Triggers.push({
         'Windfang': '風の魔技',
         'Winds of Decay': '千年の大風',
         'Wolves\' Reign': '群狼剣',
+      },
+    },
+    {
+      'locale': 'cn',
+      'replaceSync': {
+        'Gleaming Fang': '光牙',
+        'Howling Blade': '剑嚎',
+        'Moonlit Shadow': '剑嚎的幻影',
+        'Wolf Of Stone': '土狼首',
+        'Wolf of Stone': '土狼首',
+        'Wolf of Wind': '风狼首',
+      },
+      'replaceText': {
+        '--adds-targetable--': '--小怪可选中--',
+        '--shadow ': '--幻影 ',
+        '--tank/line aoes--': '--坦克/直线 AOE--',
+        '\\(circles\\)': '(圆形)',
+        '\\(cones\\)': '(扇形)',
+        '\\(enrage\\)': '(狂暴)',
+        '\\(Platform\\)': '(平台)',
+        '\\(Towers\\)': '(塔)',
+        'Aero III': '暴风',
+        'Aerotemporal Blast': '定时风击',
+        'Alpha Stone': '光狼之土',
+        'Alpha Wind': '光狼之风',
+        'Bare Fangs': '光牙召唤',
+        'Beckon Moonlight': '幻狼召唤',
+        'Breath of Decay': '千年风啸',
+        'Champion\'s Circuit': '回天动地',
+        'Elemental Purge': '风震魔印',
+        'Eminent Reign': '扫击群狼剑',
+        'Extraplanar Feast': '空间灭斩',
+        'Extraplanar Pursuit': '空间斩',
+        'Fanged Charge': '突进光牙',
+        'Forlorn Stone': '土之狼吼',
+        'Forlorn Wind': '风之狼吼',
+        'Geotemporal Blast': '定时震击',
+        'Gleaming Barrage': '连击闪光炮',
+        'Gleaming Beam': '闪光炮',
+        'Great Divide': '一刀两断',
+        'Gust': '狂风',
+        'Heavensearth': '大震击',
+        'Hero\'s Blow': '铠袖一触',
+        'Howling Eight': '八连光弹',
+        'Howling Havoc': '风尘咆哮',
+        'Hunter\'s Harvest': '贪狼之剑',
+        'Lone Wolf\'s Lament': '独狼的诅咒',
+        'Millennial Decay': '千年风化',
+        'Moonbeam\'s Bite': '幻狼剑',
+        'Mooncleaver': '刚刃一闪',
+        'Pack Predation': '光狼阵',
+        'Prowling Gale': '风狼阵',
+        'Quake III': '爆震',
+        'Ravenous Saber': '风尘光狼斩',
+        'Revolutionary Reign': '旋击群狼剑',
+        'Rise of the Howling Wind': '魔狼战形·飓风之相',
+        'Rise of the Hunter\'s Blade': '魔狼战形·咒刃之相',
+        'Roaring Wind': '风狼豪波',
+        'Shadowchase': '残影剑',
+        'Stalking Stone': '光狼地烈波',
+        'Stalking Wind': '光狼风烈波',
+        'Starcleaver': '刚刃一闪・终',
+        'Stonefang': '土之魔技',
+        'Suspended Stone': '巨岩',
+        'Tactical Pack': '光狼召唤',
+        'Terrestrial Rage': '大地之怒',
+        'Terrestrial Titans': '大地的呼唤',
+        'Titanic Pursuit': '斩空剑',
+        'Towerfall': '崩塌',
+        'Tracking Tremors': '连震击',
+        'Twinbite': '双牙击',
+        'Twofold Tempest': '双牙暴风击',
+        'Ultraviolent Ray': '魔光',
+        'Weal of Stone': '地烈波',
+        'Wind Surge': '风爆',
+        'Windfang': '风之魔技',
+        'Winds of Decay': '千年狂风',
+        'Wolves\' Reign': '群狼剑',
+      },
+    },
+    {
+      'locale': 'ko',
+      'replaceSync': {
+        'Gleaming Fang': '빛송곳니',
+        'Howling Blade': '하울링 블레이드',
+        'Moonlit Shadow': '하울링 블레이드의 환영',
+        'Wolf Of Stone': '땅의 늑대머리',
+        'Wolf of Stone': '땅의 늑대머리',
+        'Wolf of Wind': '바람의 늑대머리',
+      },
+      'replaceText': {
+        '--adds-targetable--': '--쫄 타겟가능--',
+        '--shadow ': '--환영 ',
+        '--tank/line aoes--': '--탱커/직선 장판--',
+        '\\(circles\\)': '(원형)',
+        '\\(cones\\)': '(부채꼴)',
+        '\\(enrage\\)': '(전멸기)',
+        '\\(Platform\\)': '(플랫폼)',
+        '\\(Towers\\)': '(탑)',
+        'Aero III': '에어로가',
+        'Aerotemporal Blast': '시한 바람 공격',
+        'Alpha Stone': '광랑토',
+        'Alpha Wind': '광랑풍',
+        'Bare Fangs': '빛송곳니 소환',
+        'Beckon Moonlight': '환영 늑대 소환',
+        'Breath of Decay': '천년의 바람소리',
+        'Champion\'s Circuit': '회천동지',
+        'Elemental Purge': '바람지진 각인',
+        'Eminent Reign': '절단 군랑검',
+        'Extraplanar Feast': '공간 베기: 멸절',
+        'Extraplanar Pursuit': '공간 베기',
+        'Fanged Charge': '돌진 빛송곳니',
+        'Forlorn Stone': '땅의 늑대울음',
+        'Forlorn Wind': '바람의 늑대울음',
+        'Geotemporal Blast': '시한 지진 공격',
+        'Gleaming Barrage': '연속 섬광포',
+        'Gleaming Beam': '섬광포',
+        'Great Divide': '일도양단',
+        'Gust': '선풍',
+        'Heavensearth': '대지진 공격',
+        'Hero\'s Blow': '개수일촉',
+        'Howling Eight': '8연속 빛 폭탄',
+        'Howling Havoc': '풍진의 포효',
+        'Hunter\'s Harvest': '탐랑검',
+        'Lone Wolf\'s Lament': '고고한 늑대의 저주',
+        'Millennial Decay': '천년의 풍화',
+        'Moonbeam\'s Bite': '환랑검',
+        'Mooncleaver': '강인일섬',
+        'Pack Predation': '광랑진',
+        'Prowling Gale': '풍랑진',
+        'Quake III': '퀘이가',
+        'Ravenous Saber': '풍진광랑참',
+        'Revolutionary Reign': '회전 군랑검',
+        'Rise of the Howling Wind': '마법 늑대 전법: 하늘바람',
+        'Rise of the Hunter\'s Blade': '마법 늑대 전법: 저주칼날',
+        'Roaring Wind': '풍랑호파',
+        'Shadowchase': '잔영검',
+        'Stalking Stone': '광랑지열파',
+        'Stalking Wind': '광랑풍렬파',
+        'Starcleaver': '강인일섬: 종결',
+        'Stonefang': '땅의 마기술',
+        'Suspended Stone': '거대한 암석',
+        'Tactical Pack': '빛 늑대 소환',
+        'Terrestrial Rage': '대지의 분노',
+        'Terrestrial Titans': '대지의 부름',
+        'Titanic Pursuit': '참공검',
+        'Towerfall': '무너짐',
+        'Tracking Tremors': '연속 지진 공격',
+        'Twinbite': '쌍아격',
+        'Twofold Tempest': '쌍아폭풍격',
+        'Ultraviolent Ray': '마광',
+        'Weal of Stone': '지열파',
+        'Wind Surge': '바람 폭발',
+        'Windfang': '바람의 마기술',
+        'Winds of Decay': '천년의 태풍',
+        'Wolves\' Reign': '군랑검',
       },
     },
   ],
